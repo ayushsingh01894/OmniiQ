@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "@fontsource-variable/instrument-sans";
+
+@theme {
+  --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-paper: #f4f6f4;
+  --color-surface: #ffffff;
+  --color-ink: #16201d;
+  --color-muted: #566259;
+  --color-line: #d8ded9;
+  --color-accent: #0d6b61;
+  --color-accent-soft: #dcefeb;
+  --color-warn: #8a4f08;
+  --color-warn-soft: #f8ead3;
+  --color-danger: #9c3126;
+  --color-danger-soft: #f6e0dc;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+}
