@@ -1,0 +1,76 @@
+[project]
+name = "omniiq-backend"
+version = "0.1.0"
+description = "OmniIQ backend API"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "fastapi==0.143.1",
+  "uvicorn[standard]==0.54.0",
+  "pydantic-settings==2.16.0",
+  "sqlalchemy==2.0.54",
+  "alembic==1.20.0",
+  "psycopg[binary]==3.3.6",
+  "argon2-cffi==25.1.0",
+  "PyJWT==2.15.1",
+  "email-validator==2.3.0",
+  "pandas==3.0.6",
+  "numpy==2.5.4",
+  "pyarrow==26.0.0",
+  "openpyxl==3.1.5",
+  "defusedxml==0.7.1",
+  "python-multipart==0.0.32",
+  "celery==5.6.3",
+  "redis==6.4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.4.2",
+  "httpx==0.28.1",
+  "ruff==0.17.0",
+  "mypy==2.4.0",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "S105", "S106"]
+"migrations/*" = ["E501", "I001"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = []
+files = ["app"]
+
+# These libraries ship no (or partial) type information.
+[[tool.mypy.overrides]]
+module = ["pandas.*", "pyarrow.*", "openpyxl.*", "celery.*", "kombu.*", "redis.*"]
+ignore_missing_imports = true
+follow_untyped_imports = true
+
+# pandas returns Any in many places; Celery's decorators/constructors are untyped.
+[[tool.mypy.overrides]]
+module = ["app.services.datasets.*"]
+warn_return_any = false
+
+[[tool.mypy.overrides]]
+module = ["app.workers.*"]
+disallow_untyped_calls = false
+disallow_untyped_decorators = false
